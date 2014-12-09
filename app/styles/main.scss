@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.root {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.pure-g [class *= pure-u] {
+  //font-family: Helvetica;
+}
+
+.endinput {
+  font-size: 3em;
+  font-weight: 900;
+  text-align: center;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: lighten(black, 20%);
+}
+.endinput__entry {
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid;
+  border-color: white;
+}
+.endinput__entry--empty {
+  -webkit-text-stroke-width: 0px;
+  border: 1px dashed;
+  color: transparent;
+}
+
+.endinput__done {
+  background-color: darkorange;
+}
+
+.numpad__button {
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid;
+  border-color: white;
+  font-size: 3em;
+  font-weight: 900;
+}
+
+@mixin button-background($color) {
+  background-color: $color;
+  color: white;
+  &:hover {
+    border-color: black;
+    background-color: lighten($color, 10%);
+  }
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: lighten(black, 20%);
+}
+
+.numpad__button--gold {
+  @include button-background(lighten(yellow, 15%));
+}
+.numpad__button--red {
+  @include button-background(lighten(red, 10%));
+}
+.numpad__button--blue {
+  @include button-background(lighten(blue, 10%));
+}
+.numpad__button--black {
+  @include button-background(lighten(black, 20%));
+  color: white;
+}
+.numpad__button--white {
+  @include button-background(darken(white, 0%));
+}
+.numpad__button--miss {
+  @include button-background(lighten(green, 60%));
+}
