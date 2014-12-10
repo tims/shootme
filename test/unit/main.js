@@ -3,7 +3,7 @@
 describe('controllers', function(){
   var scope;
 
-  beforeEach(module('saltcog'));
+  beforeEach(module('shootme'));
 
   beforeEach(inject(function($rootScope) {
   	scope = $rootScope.$new();

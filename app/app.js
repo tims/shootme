@@ -1,14 +1,18 @@
 'use strict';
 
-angular.module('saltcog', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute'])
+angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-        templateUrl: 'partials/main.html',
-        controller: 'MainController'
+      .when('/newend', {
+        templateUrl: 'partials/newend.html',
+        controller: 'NewEndController'
+      })
+      .when('/scorecard', {
+        templateUrl: 'partials/scorecard.html',
+        controller: 'ScorecardController'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/newend'
       });
   })
 ;

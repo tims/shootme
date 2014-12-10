@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('saltcog')
-  .directive('inputPage', function () {
+angular.module('shootme')
+  .directive('newend', function () {
     function getRing(score) {
       if (_.isNumber(score)) {
         switch (Math.ceil(score / 2)) {
@@ -26,21 +26,33 @@ angular.module('saltcog')
     var InputEntries = React.createClass({
       getInitialState: function() {
         return {
-          scores: []
+          scores: [],
+          activeScore: 0
         };
       },
 
       handleAddScore: function(score) {
-        this.state.scores.push(score);
-        this.state.scores = _.sortBy(this.state.scores, function(d) {return -d});
-        this.setState(this.state);
+        if (this.state.scores.length < 6) {
+          this.state.scores.push(score);
+          this.setState({
+            scores: _.sortBy(this.state.scores, function(d) {return -d}),
+            activeScore: this.state.activeScore + 1
+          });
+        }
+      },
+
+      handleDone: function() {
+        this.setState(this.getInitialState());
       },
 
       render: function () {
         var state = this.state;
         var entries = _.map(_.range(6), function (i) {
-          var score = (i < state.scores.length) ? state.scores[i] : null;
+          var score = (i < state.scores.length) ? state.scores[i] : '_';
           var className = 'endinput__entry endinput__entry--' + getRing(score);
+          if (state.activeScore === i) {
+            className += ' endinput__entry--active';
+          }
           return <div className="pure-u-1-6">
             <div className={className}>{score}</div>
           </div>;
@@ -48,7 +60,6 @@ angular.module('saltcog')
 
         return <div className="pure-g endinput">
           {entries}
-          <div className="pure-u-1-1 endinput__done">Done!</div>
         </div>
       }
     });
@@ -69,7 +80,7 @@ angular.module('saltcog')
 
         return <div>
           <InputEntries ref="inputEntries" />
-
+          <a href="/#/scorecard" className="pure-u-1 pure-button button-success">Done</a>
           <div className="pure-g numpad">
             {numpadButtons}
           </div>

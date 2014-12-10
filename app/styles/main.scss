@@ -6,24 +6,80 @@ a {
   text-decoration: none;
 }
 
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+  color: white;
+  border-radius: 0px;
+  //text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.button-success {
+  background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+  background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+  background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+  background: rgb(66, 184, 221); /* this is a light blue */
+}
+
 .root {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
 .pure-g [class *= pure-u] {
   //font-family: Helvetica;
 }
 
+.scorecard__header {
+  padding-top: 10px;
+  font-size: 0.5em;
+  font-weight: 900;
+  text-align: center;
+  border-bottom: 2px solid black;
+}
+
+.end {
+  font-size: 1.7em;
+  font-weight: 900;
+  text-align: center;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+@mixin end__box {
+  box-sizing: border-box;
+  padding: 10px 0px 10px 0px;
+}
+
+.end__number {
+  @include end__box();
+  font-size: 0.5em;
+  color: lighten(black, 50%);
+}
+.end__score {
+  @include end__box();
+  box-sizing: border-box;
+}
+
+.end__total, .end__running-total {
+  @include end__box();
+  border-left: 2px solid black;
+}
+
 .endinput {
   font-size: 3em;
   font-weight: 900;
   text-align: center;
-  color: white;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: lighten(black, 20%);
+  color: black;
 }
 .endinput__entry {
   box-sizing: border-box;
@@ -33,10 +89,13 @@ a {
   border-color: white;
 }
 .endinput__entry--empty {
-  -webkit-text-stroke-width: 0px;
-  border: 1px dashed;
   color: transparent;
 }
+.endinput__entry--active {
+  border: 2px dashed;
+  color: red;
+}
+
 
 .endinput__done {
   background-color: darkorange;
