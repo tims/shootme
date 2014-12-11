@@ -10,6 +10,8 @@ a {
 .button-error,
 .button-warning,
 .button-secondary {
+  font-size: 1.7em;
+  padding: 1em 0 1em 0;
   color: white;
   border-radius: 0px;
   //text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -57,7 +59,7 @@ a {
 
 @mixin end__box {
   box-sizing: border-box;
-  padding: 10px 0px 10px 0px;
+  padding: 1em 0 1em 0;
 }
 
 .end__number {
@@ -92,8 +94,8 @@ a {
   color: transparent;
 }
 .endinput__entry--active {
-  border: 2px dashed;
-  color: red;
+  //border: 2px dashed;
+  color: lightcoral;
 }
 
 

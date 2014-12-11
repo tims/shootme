@@ -32,20 +32,24 @@ angular.module('shootme')
       },
 
       handleAddScore: function(score) {
-        if (this.state.scores.length < 6) {
+        if (this.state.activeScore <= this.state.scores.length && this.state.activeScore < 6) {
+          this.state.scores[this.state.activeScore] = score;
+          this.state.activeScore += 1;
+        } else if (this.state.scores.length < 6) {
           this.state.scores.push(score);
-          this.setState({
-            scores: _.sortBy(this.state.scores, function(d) {return -d}),
-            activeScore: this.state.activeScore + 1
-          });
+          this.state.activeScore += 1;
+        }
+        this.setState(this.state)
+      },
+
+      handleActivate: function(i) {
+        if (i < this.state.scores.length) {
+          this.setState({activeScore: i});
         }
       },
 
-      handleDone: function() {
-        this.setState(this.getInitialState());
-      },
-
       render: function () {
+        var self = this;
         var state = this.state;
         var entries = _.map(_.range(6), function (i) {
           var score = (i < state.scores.length) ? state.scores[i] : '_';
@@ -54,7 +58,7 @@ angular.module('shootme')
             className += ' endinput__entry--active';
           }
           return <div className="pure-u-1-6">
-            <div className={className}>{score}</div>
+            <div className={className} onClick={function() {self.handleActivate(i)}}>{score}</div>
           </div>;
         });
 
