@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('shootme')
-  .directive('scorecard', function () {
+  .directive('scorecard', function ($http) {
     function getRing(score) {
       if (_.isNumber(score)) {
         switch (Math.ceil(score / 2)) {
@@ -24,26 +24,23 @@ angular.module('shootme')
     }
 
     var Scorecard = React.createClass({
+      componentWillMount: function() {
+        this.roundPromise = $http({
+          method: 'GET',
+          url: 'http://localhost:3001/tim/rounds/1'
+        });
+      },
+
+      componentDidMount: function() {
+        var self = this;
+        this.roundPromise.then(function(response) {
+          self.setState(response.data);
+        });
+      },
+
       getInitialState: function() {
         return {
-          ends: [
-            {
-              distance: 70,
-              scores: [8,8,8,6,6,5]
-            },
-            {
-              distance: 70,
-              scores: [9,7,6,6,6,5]
-            },
-            {
-              distance: 70,
-              scores: [10,9,9,6,5,4]
-            },
-            {
-              distance: 70,
-              scores: [10,7,7,7,6,6]
-            }
-          ]
+          ends: []
         };
       },
 
@@ -73,7 +70,7 @@ angular.module('shootme')
 
         return <div className="pure-g">
           {ends}
-          <a href="/#/newend" className="pure-u-1 pure-button button-success">Add an end</a>
+          <a href="/#/end" className="pure-u-1 pure-button button-success">Add an end</a>
         </div>
       }
     });

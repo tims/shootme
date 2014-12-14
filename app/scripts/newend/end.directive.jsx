@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('shootme')
-  .directive('newend', function () {
+  .directive('end', function ($http, $location) {
     function getRing(score) {
       if (_.isNumber(score)) {
         switch (Math.ceil(score / 2)) {
@@ -23,7 +23,7 @@ angular.module('shootme')
       }
     }
 
-    var InputEntries = React.createClass({
+    var End = React.createClass({
       getInitialState: function() {
         return {
           scores: [],
@@ -68,9 +68,26 @@ angular.module('shootme')
       }
     });
 
-    var InputPage = React.createClass({
+    var EndPage = React.createClass({
       handleAddScore: function(score) {
         this.refs.inputEntries.handleAddScore(score);
+      },
+
+      handleDone: function() {
+        console.log( {
+          distance: 70,
+            scores: this.refs.inputEntries.state.scores
+        });
+        $http({
+          method: 'POST',
+          url: 'http://localhost:3001/tim/rounds/1/ends',
+          data: {
+            distance: 70,
+            scores: this.refs.end.state.scores
+          }
+        }).then(function() {
+          $location.path( '/scorecard' );
+        });
       },
 
       render: function () {
@@ -83,8 +100,8 @@ angular.module('shootme')
         });
 
         return <div>
-          <InputEntries ref="inputEntries" />
-          <a href="/#/scorecard" className="pure-u-1 pure-button button-success">Done</a>
+          <End ref="end" />
+          <button onClick={this.handleDone} className="pure-u-1 pure-button button-success">Done</button>
           <div className="pure-g numpad">
             {numpadButtons}
           </div>
@@ -97,7 +114,7 @@ angular.module('shootme')
       link: function ($scope, element) {
         var root = $(element).get(0);
 
-        React.render(<InputPage />, root);
+        React.render(<EndPage />, root);
       }
     }
   });
