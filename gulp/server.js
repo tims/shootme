@@ -8,6 +8,8 @@ var browserSync = require('browser-sync');
 
 var middleware = require('./proxy');
 
+var nodemon = require('gulp-nodemon');
+
 function browserSyncInit(baseDir, files, browser) {
   browser = browser === undefined ? 'default' : browser;
 
@@ -33,7 +35,7 @@ function browserSyncInit(baseDir, files, browser) {
 
 }
 
-gulp.task('serve', ['watch'], function () {
+gulp.task('serve', ['watch', 'serve-api'], function () {
   browserSyncInit([
     'build'
   ], [
@@ -42,6 +44,12 @@ gulp.task('serve', ['watch'], function () {
     'build/**/*.html',
     'build/**/*.js'
   ]);
+});
+
+gulp.task('serve-api', function() {
+  nodemon({
+    script: 'api/api.js'
+  });
 });
 
 gulp.task('serve:e2e', function () {

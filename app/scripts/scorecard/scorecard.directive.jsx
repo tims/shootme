@@ -27,7 +27,7 @@ angular.module('shootme')
       componentWillMount: function() {
         this.roundPromise = $http({
           method: 'GET',
-          url: 'http://localhost:3001/tim/rounds/1'
+          url: 'http://localhost:3001/api/scorecards/1'
         });
       },
 
@@ -55,8 +55,9 @@ angular.module('shootme')
             return acc + _.reduce(state.ends[j].scores, function(acc,score){return acc + score;}, 0);
           }, 0);
           return <div className="pure-u-1 pure-g end">
+
             <div className="pure-u-7-12 pure-g">
-              <div className="pure-g">
+              <div id={end.id} className="pure-g">
                 {endScores}
               </div>
               </div>
@@ -76,11 +77,13 @@ angular.module('shootme')
     });
 
     return {
-      scope: {},
+      scope: {
+        id: '='
+      },
       link: function ($scope, element) {
         var root = $(element).get(0);
 
-        React.render(<Scorecard />, root);
+        React.render(<Scorecard id={$scope.id}/>, root);
       }
     }
   });

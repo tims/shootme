@@ -6,6 +6,11 @@ a {
   text-decoration: none;
 }
 
+h1, h2 {
+  margin: 0px;
+  padding: 10px;
+}
+
 .button-success,
 .button-error,
 .button-warning,
@@ -143,3 +148,9 @@ a {
 .numpad__button--miss {
   @include button-background(lighten(green, 60%));
 }
+
+select, option {
+  font-size: 2em;
+  height: 2em;
+}
+

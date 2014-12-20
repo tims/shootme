@@ -1,8 +1,8 @@
 var express = require('express');
-var moment = require('moment');
 var cors = require('cors')
 var bodyParser = require('body-parser');
 var _ = require('lodash');
+var q = require('q');
 
 var app = express();
 app.use(cors());
@@ -15,19 +15,6 @@ var knex = require('knex')({
   }
 });
 
-knex.schema.createTable('scorecards', function (table) {
-  table.increments('id');
-}).then();
-
-knex.insert({}).into('scorecards').then();
-
-knex.schema.createTable('ends', function (table) {
-  table.increments('id');
-  table.integer('scorecard_id').references('id').inTable('scorecards');
-  table.integer('distance');
-  table.json('scores');
-}).then();
-
 function serScores(arr) {
   return arr.join(',');
 }
@@ -38,46 +25,38 @@ function deserScores(str) {
   });
 }
 
-function getScorecard(scorecardId) {
-  return knex('scorecards').select().where({id: scorecardId}).then(function(rows) {
-    if (rows.length != 1) {
-      throw 'No scorecard with id ' + scorecardId;
+function firstWhere(table, whereData) {
+  return knex.first().from(table).where(whereData).then(function (row) {
+    if (!row) {
+      throw 'No ' + table + ' found where ' + whereData;
+    } else {
+      return row;
     }
   });
 }
 
-knex('ends').insert({'scores': serScores([9, 8, 7, 6, 5, 4]), distance: 70, scorecard_id: 1}).then();
+function firstById(table, id) {
+  return firstWhere(table, {id: id});
+}
 
-
-var rounds = {
-  1: {
-    date: moment().format('YYYY-MM-DD'),
-    ends: []
-  }
-};
-
-
-app.get('/:username', function (req, res) {
-  res.send('OK');
+app.get('/api/users', function (req, res) {
+  console.log(req.method, req.path);
+  knex.select().from('users').then(function (users) {
+    res.send(users);
+  });
 });
 
-app.get('/:username/rounds/:scorecardId', function (req, res) {
-  getScorecard(req.params.scorecardId).then(function () {
-    return knex.select()
-      .from('ends')
-      .where({'scorecard_id': req.params.scorecardId});
-  }).then(function (rows) {
-    console.log('rows',rows);
-    res.send({
-      id: req.params.roundId,
-      ends: _.map(rows, function (row) {
-        return {
-          id: row.id,
-          distance: row.distance,
-          scores: deserScores(row.scores)
-        }
-      })
-    });
+app.get('/api/users/:userId', function (req, res) {
+  console.log(req.method, req.path);
+  var userId = req.params.userId;
+  q.all([
+    firstById('users', userId),
+    knex.select().from('scorecards').where({user_id: userId})
+  ]).then(function (result) {
+    var user = result[0];
+    var scorecards = result[1];
+    user.scorecards = scorecards;
+    res.send(user);
   }).catch(function (error) {
     console.error(error);
     res.status(500);
@@ -86,27 +65,88 @@ app.get('/:username/rounds/:scorecardId', function (req, res) {
 });
 
 
-app.post('/:username/rounds/:scorecardId/ends', function (req, res) {
-  console.log('POST', req.path, req.method);
-
-  if (req.body.scores.length !== 6 || !req.body.distance) {
-    res.status(500);
-    res.send('ERROR');
-    return;
-  }
-
-  getScorecard(req.params.scorecardId).then(function () {
-    return knex('ends').insert({
-      scores: serScores(req.body.scores),
-      distance: req.body.distance,
-      scorecard_id: req.params.scorecardId
+app.get('/api/scorecards/:scorecardId', function (req, res) {
+  console.log(req.method, req.path);
+  firstWhere('scorecards', req.params.scorecardId).then(function (scorecard) {
+    console.log('scorecard', scorecard);
+    return knex.select()
+      .from('ends')
+      .where({'scorecard_id': req.params.scorecardId});
+  }).then(function (rows) {
+    res.send({
+      id: req.params.roundId,
+      ends: _.map(_.sortBy(rows, 'id'), function (row) {
+        return {
+          id: row.id,
+          distance: row.distance,
+          scores: deserScores(row.scores)
+        }
+      })
     });
-  }).then(function () {
-    res.send('OK');
   }).catch(function (error) {
+    res.status(500);
+    res.send(error);
+    console.error(error);
+    throw error;
+  });
+});
+
+
+app.post('/api/scorecards', function (req, res) {
+  console.log(req.method, req.path);
+  var data = req.body;
+
+  firstById('users', data.userId).then(function (user) {
+    return knex.insert({user_id: user.id, date: data.date}).into('scorecards');
+  }).then(function (row) {
+    res.send(row);
+  }).catch(function (error) {
+    console.error(error);
     res.status(500);
     res.send(error);
   });
 });
 
+app.delete('/api/scorecards/:scorecardId', function (req, res) {
+  console.log(req.method, req.path);
+  var data = req.body;
+  //
+  //q.all([
+  //  getById('users', data.user_id),
+  //  getById('scorecards', scorecardId)
+  //
+  //}).then(function (row) {
+  //  console.log(row);
+  //  res.send('OK');
+  //}).catch(function (error) {
+  //  console.error(error);
+  //  res.status(500);
+  //  res.send(error);
+  //});
+});
+
+
+app.post('/api/scorecards/:scorecardId/ends', function (req, res) {
+  console.log(req.method, req.path);
+
+  if (req.body.scores.length !== 6 || !req.body.distance) {
+    res.status(500);
+    res.send('ERROR');
+  } else {
+    getScorecard(req.params.scorecardId).then(function () {
+      return knex('ends').insert({
+        scores: serScores(req.body.scores),
+        distance: req.body.distance,
+        scorecard_id: req.params.scorecardId
+      });
+    }).then(function () {
+      res.send('OK');
+    }).catch(function (error) {
+      res.status(500);
+      res.send(error);
+    });
+  }
+});
+
+console.log('Listening on port 3001');
 app.listen(3001);

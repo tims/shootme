@@ -80,7 +80,7 @@ angular.module('shootme')
         });
         $http({
           method: 'POST',
-          url: 'http://localhost:3001/tim/rounds/1/ends',
+          url: 'http://localhost:3001/api/scorecards/1/ends',
           data: {
             distance: 70,
             scores: this.refs.end.state.scores
