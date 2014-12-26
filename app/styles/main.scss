@@ -38,8 +38,8 @@ h1, h2 {
 }
 
 .root {
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .pure-g [class *= pure-u] {
@@ -57,12 +57,12 @@ h1, h2 {
 .end {
   font-size: 1.7em;
   font-weight: 900;
-  text-align: center;
   color: black;
   border-bottom: 2px solid black;
 }
 
 @mixin end__box {
+  text-align: center;
   box-sizing: border-box;
   padding: 1em 0 1em 0;
 }

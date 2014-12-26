@@ -24,14 +24,14 @@ angular.module('shootme')
     }
 
     var End = React.createClass({
-      getInitialState: function() {
+      getInitialState: function () {
         return {
-          scores: [],
+          scores: this.props.scores || [],
           activeScore: 0
         };
       },
 
-      handleAddScore: function(score) {
+      handleAddScore: function (score) {
         if (this.state.activeScore <= this.state.scores.length && this.state.activeScore < 6) {
           this.state.scores[this.state.activeScore] = score;
           this.state.activeScore += 1;
@@ -42,13 +42,17 @@ angular.module('shootme')
         this.setState(this.state)
       },
 
-      handleActivate: function(i) {
+      handleActivate: function (i) {
         if (i < this.state.scores.length) {
           this.setState({activeScore: i});
         }
       },
 
       render: function () {
+        if (_.isEmpty(this.state.scores) && !_.isEmpty(this.props.scores)) {
+          this.state.scores = this.props.scores;
+        }
+
         var self = this;
         var state = this.state;
         var entries = _.map(_.range(6), function (i) {
@@ -58,7 +62,9 @@ angular.module('shootme')
             className += ' endinput__entry--active';
           }
           return <div className="pure-u-1-6">
-            <div className={className} onClick={function() {self.handleActivate(i)}}>{score}</div>
+            <div className={className} onClick={function () {
+              self.handleActivate(i)
+            }}>{score}</div>
           </div>;
         });
 
@@ -69,38 +75,45 @@ angular.module('shootme')
     });
 
     var EndPage = React.createClass({
-      handleAddScore: function(score) {
-        this.refs.inputEntries.handleAddScore(score);
+      handleAddScore: function (score) {
+        this.refs.end.handleAddScore(score);
       },
 
-      handleDone: function() {
-        console.log( {
-          distance: 70,
-            scores: this.refs.inputEntries.state.scores
-        });
+
+      handleDone: function () {
+        var props = this.props;
+        var url = 'http://localhost:3001/api/scorecards/' + props.scorecardId +'/ends';
+        if (props.id) {
+          url += '/' + props.id;
+        }
+        var scores = _.sortBy(this.refs.end.state.scores, function(i) {return -i});
+
         $http({
           method: 'POST',
-          url: 'http://localhost:3001/api/scorecards/1/ends',
+          url: url,
           data: {
             distance: 70,
-            scores: this.refs.end.state.scores
+            scores: scores
           }
-        }).then(function() {
-          $location.path( '/scorecard' );
+        }).then(function () {
+          $location.path('/scorecards/' + props.scorecardId);
         });
       },
 
       render: function () {
         var self = this;
+
         var numpadButtons = _.map(_.range(0, 11), function (i) {
           i = 10 - i;
           return <div className="pure-u-1-4">
-            <div className={'numpad__button numpad__button--' + getRing(i)} onClick={function() {self.handleAddScore(i)}}>{i}</div>
+            <div className={'numpad__button numpad__button--' + getRing(i)} onClick={function () {
+              self.handleAddScore(i)
+            }}>{i}</div>
           </div>
         });
 
         return <div>
-          <End ref="end" />
+          <End ref="end" scores={this.props.scores} />
           <button onClick={this.handleDone} className="pure-u-1 pure-button button-success">Done</button>
           <div className="pure-g numpad">
             {numpadButtons}
@@ -110,11 +123,23 @@ angular.module('shootme')
     });
 
     return {
-      scope: {},
+      scope: {
+        id: '=',
+        scorecardId: '=',
+        scores: '='
+      },
+
       link: function ($scope, element) {
         var root = $(element).get(0);
+        var component = React.render(<EndPage id={$scope.id} scorecardId={$scope.scorecardId} />, root);
 
-        React.render(<EndPage />, root);
+        $scope.$watch('scores', function () {
+          console.log('.'+$scope.id +',' +$scope.scorecardId+'.');
+          console.log($scope.scores);
+
+          component.setProps({id: $scope.id, scorecardId: $scope.scorecardId, scores: $scope.scores});
+        });
+
       }
     }
   });

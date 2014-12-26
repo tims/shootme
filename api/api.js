@@ -26,7 +26,8 @@ function deserScores(str) {
 }
 
 function firstWhere(table, whereData) {
-  return knex.first().from(table).where(whereData).then(function (row) {
+  var query = knex.first().from(table).where(whereData);
+  return query.then(function (row) {
     if (!row) {
       throw 'No ' + table + ' found where ' + whereData;
     } else {
@@ -67,21 +68,17 @@ app.get('/api/users/:userId', function (req, res) {
 
 app.get('/api/scorecards/:scorecardId', function (req, res) {
   console.log(req.method, req.path);
-  firstWhere('scorecards', req.params.scorecardId).then(function (scorecard) {
-    console.log('scorecard', scorecard);
-    return knex.select()
-      .from('ends')
-      .where({'scorecard_id': req.params.scorecardId});
-  }).then(function (rows) {
-    res.send({
-      id: req.params.roundId,
-      ends: _.map(_.sortBy(rows, 'id'), function (row) {
+  firstById('scorecards', req.params.scorecardId).then(function (scorecard) {
+    knex.select().from('ends').where({'scorecard_id': req.params.scorecardId}).then(function (ends) {
+      scorecard.ends = _.map(_.sortBy(ends, 'id'), function (end) {
         return {
-          id: row.id,
-          distance: row.distance,
-          scores: deserScores(row.scores)
+          id: end.id,
+          distance: end.distance,
+          scores: deserScores(end.scores)
         }
-      })
+      });
+
+      res.send(scorecard);
     });
   }).catch(function (error) {
     res.status(500);
@@ -90,7 +87,6 @@ app.get('/api/scorecards/:scorecardId', function (req, res) {
     throw error;
   });
 });
-
 
 app.post('/api/scorecards', function (req, res) {
   console.log(req.method, req.path);
@@ -133,7 +129,7 @@ app.post('/api/scorecards/:scorecardId/ends', function (req, res) {
     res.status(500);
     res.send('ERROR');
   } else {
-    getScorecard(req.params.scorecardId).then(function () {
+    firstById('scorecards', req.params.scorecardId).then(function () {
       return knex('ends').insert({
         scores: serScores(req.body.scores),
         distance: req.body.distance,
@@ -147,6 +143,61 @@ app.post('/api/scorecards/:scorecardId/ends', function (req, res) {
     });
   }
 });
+
+app.delete('/api/scorecards/:scorecardId/ends/:endId', function (req, res) {
+  knex('ends').where({
+    id: req.params.endId,
+    scorecard_id: req.params.scorecardId
+  }).delete().then(function() {
+    res.send('OK');
+  }).catch(function(error) {
+    res.status(500);
+    res.send(error);
+  });
+
+});
+
+app.post('/api/scorecards/:scorecardId/ends/:endId', function (req, res) {
+  console.log(req.method, req.path);
+
+  if (req.body.scores.length !== 6 || !req.body.distance) {
+    res.status(500);
+    res.send('ERROR');
+  } else {
+    firstWhere('ends', {
+      id: req.params.endId,
+      scorecard_id: req.params.scorecardId
+    }).then(function () {
+      return knex('ends').where({
+        id: req.params.endId,
+        scorecard_id: req.params.scorecardId
+      }).update({
+        scores: serScores(req.body.scores),
+        distance: req.body.distance
+      });
+    }).then(function () {
+      res.send('OK');
+    }).catch(function (error) {
+      res.status(500);
+      res.send(error);
+    });
+  }
+});
+
+app.get('/api/scorecards/:scorecardId/ends/:endId', function (req, res) {
+  console.log(req.method, req.path);
+
+  firstWhere('ends', {
+    scorecard_id: req.params.scorecardId,
+    id: req.params.endId
+  }).then(function (end) {
+    res.send(end);
+  }).catch(function (error) {
+    res.status(500);
+    res.send(error);
+  });
+});
+
 
 console.log('Listening on port 3001');
 app.listen(3001);

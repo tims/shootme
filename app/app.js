@@ -3,7 +3,11 @@
 angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/end', {
+      .when('/ends/new', {
+        templateUrl: 'partials/end.html',
+        controller: 'EndController'
+      })
+      .when('/scorecards/:scorecardId/ends/:endId', {
         templateUrl: 'partials/end.html',
         controller: 'EndController'
       })
@@ -22,5 +26,8 @@ angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
       .otherwise({
         redirectTo: '/login'
       });
-  })
-;
+  });
+
+angular.module('shootme').value('configuration', {
+  apiUrl: 'http://localhost:3001/api'
+});

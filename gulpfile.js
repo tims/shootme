@@ -10,5 +10,5 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('default', ['clean'], function () {
-    gulp.start('build');
+    gulp.start('serve');
 });
