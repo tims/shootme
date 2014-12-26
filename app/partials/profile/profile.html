@@ -4,12 +4,15 @@
 
 <div class="pure-g">
   <h2 class="pure-u-1">Scorecards</h2>
+
   <div ng-show="hasScorecards">
     You don't have any scorecards
   </div>
-  <div class="pure-u-1" ng-hide="hasScorecards" ng-repeat="scorecard in user.scorecards">
-    <a href="/#/scorecards/{{scorecard.id}}">{{scorecard.date.format('DD MMM YYYY')}}</a>
-  </div>
+  <ul class="scorecard-list">
+    <li class="pure-u-1" ng-hide="hasScorecards" ng-repeat="scorecard in user.scorecards">
+      <a href="/#/scorecards/{{scorecard.id}}">{{scorecard.date.format('DD MMM YYYY')}}</a>
+    </li>
+  </ul>
 </div>
 <button class="pure-u-1 pure-button button-success"
         ng-click="addNewScorecard()">
