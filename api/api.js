@@ -40,8 +40,12 @@ function firstById(table, id) {
   return firstWhere(table, {id: id});
 }
 
+app.use(express.static(__dirname + '/../build'));
+
+
 app.get('/api/users', function (req, res) {
   console.log(req.method, req.path);
+
   knex.select().from('users').then(function (users) {
     res.send(users);
   });
@@ -198,6 +202,7 @@ app.get('/api/scorecards/:scorecardId/ends/:endId', function (req, res) {
   });
 });
 
-
-console.log('Listening on port 3001');
-app.listen(3001);
+app.set('port', (process.env.PORT || 8001));
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'));
+});

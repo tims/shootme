@@ -29,5 +29,5 @@ angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
   });
 
 angular.module('shootme').value('configuration', {
-  apiUrl: 'http://localhost:3001/api'
+  apiUrl: '/api'
 });

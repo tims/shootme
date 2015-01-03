@@ -17,7 +17,7 @@ angular.module('shootme')
       deleteEnd: function (scorecardId, endId) {
         return $http({
           method: 'DELETE',
-          url: 'http://localhost:3001/api/scorecards/' + scorecardId + '/ends/' + endId
+          url: configuration.apiUrl + '/scorecards/' + scorecardId + '/ends/' + endId
         });
       }
     };

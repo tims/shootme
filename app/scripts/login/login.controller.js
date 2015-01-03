@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('shootme')
-  .controller('LoginController', function ($http, $location, $scope) {
+  .controller('LoginController', function ($http, $location, $scope, configuration) {
     $http({
       method: 'GET',
-      url: 'http://localhost:3001/api/users'
+      url: configuration.apiUrl + '/users'
     }).then(function(response){
       $scope.users = response.data;
     });

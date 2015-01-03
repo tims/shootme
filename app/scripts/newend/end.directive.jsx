@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('shootme')
-  .directive('end', function ($http, $location) {
+  .directive('end', function ($http, $location, configuration) {
     function getRing(score) {
       if (_.isNumber(score)) {
         switch (Math.ceil(score / 2)) {
@@ -82,7 +82,7 @@ angular.module('shootme')
 
       handleDone: function () {
         var props = this.props;
-        var url = 'http://localhost:3001/api/scorecards/' + props.scorecardId +'/ends';
+        var url = configuration.apiUrl + '/scorecards/' + props.scorecardId +'/ends';
         if (props.id) {
           url += '/' + props.id;
         }

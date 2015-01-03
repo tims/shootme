@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('shootme')
-  .controller('ScorecardController', function ($http, $routeParams, $scope, $location) {
+  .controller('ScorecardController', function ($http, $routeParams, $scope, $location, configuration) {
 
     function sum(arr, callback) {
       return _.reduce(arr, function (acc, val) {
@@ -15,7 +15,7 @@ angular.module('shootme')
 
     $http({
       method: 'GET',
-      url: 'http://localhost:3001/api/scorecards/' + $routeParams.scorecardId
+      url: configuration.apiUrl + '/scorecards/' + $routeParams.scorecardId
     }).then(function (response) {
       var scorecard = response.data;
       $scope.scorecardId = scorecard.id;
