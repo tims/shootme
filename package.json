@@ -53,7 +53,6 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "main": "node api/api.js",
-    "postinstall": "node node_modules/.bin/gulp build"
+    "main": "node api/api.js"
   }
 }
