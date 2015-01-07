@@ -7,7 +7,7 @@ var wiredep = require('wiredep').stream;
 var filter = require('gulp-filter');
 var size = require('gulp-size');
 var jshint = require('gulp-jshint');
-var sass = require('gulp-sass');
+var sass = require('gulp-ruby-sass');
 
 function handleError(err) {
   console.error(err.toString());
@@ -16,7 +16,7 @@ function handleError(err) {
 
 gulp.task('styles', function () {
   return gulp.src('app/**/*.scss')
-    .pipe(sass({style: 'expanded'}))
+    .pipe(sass())
     .on('error', handleError)
     .pipe(gulp.dest('build'))
     .pipe(size());
