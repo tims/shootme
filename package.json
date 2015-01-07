@@ -22,7 +22,6 @@
     "gulp-csso": "^0.2.6",
     "gulp-filter": "^1.0.0",
     "gulp-flatten": "^0.0.2",
-    "gulp-imagemin": "^1.0.0",
     "gulp-inject": "^1.0.0",
     "gulp-jshint": "^1.8.0",
     "gulp-karma": "^0.0.4",
@@ -50,10 +49,9 @@
     "wiredep": "^1.8.5"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "0.10.x"
   },
   "scripts": {
-    "main": "node api/api.js",
-    "postinstall": "node node_modules/.bin/gulp build"
+    "main": "node api/api.js"
   }
 }
