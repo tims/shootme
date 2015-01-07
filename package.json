@@ -51,7 +51,8 @@
     "node-sass": "1.2.2"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.10.x",
+    "npm":  "~1.4.28"
   },
   "scripts": {
     "main": "node api/api.js"
