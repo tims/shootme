@@ -50,7 +50,7 @@
     "wiredep": "^1.8.5"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "^0.10.0"
   },
   "scripts": {
     "main": "node api/api.js",
