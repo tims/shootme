@@ -47,7 +47,8 @@
     "require-dir": "^0.1.0",
     "sqlite3": "^3.0.4",
     "uglify-save-license": "^0.4.1",
-    "wiredep": "^1.8.6"
+    "wiredep": "^1.8.6",
+    "node-sass": "1.2.2"
   },
   "engines": {
     "node": "0.10.x"
