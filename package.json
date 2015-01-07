@@ -52,7 +52,7 @@
   },
   "engines": {
     "node": "0.10.x",
-    "npm":  "~1.4.28"
+    "npm":  "2.1.17"
   },
   "scripts": {
     "main": "node api/api.js"
