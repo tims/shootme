@@ -10,3 +10,4 @@ dist
 .jshintrc
 .yo-rc.json
 shootme.iml
+npm-debug.log

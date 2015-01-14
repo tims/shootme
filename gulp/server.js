@@ -35,7 +35,7 @@ function browserSyncInit(baseDir, files, browser) {
 
 }
 
-gulp.task('serve', ['watch', 'serve-api'], function () {
+gulp.task('serve', ['watch'], function () {
   browserSyncInit([
     'build'
   ], [
@@ -44,12 +44,6 @@ gulp.task('serve', ['watch', 'serve-api'], function () {
     'build/**/*.html',
     'build/**/*.js'
   ]);
-});
-
-gulp.task('serve-api', function() {
-  nodemon({
-    script: 'api/api.js'
-  });
 });
 
 gulp.task('serve:e2e', function () {

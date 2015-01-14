@@ -79,15 +79,21 @@ angular.module('shootme')
         this.refs.end.handleAddScore(score);
       },
 
-
       handleDone: function () {
+        console.log('handleDone!');
+        this.submitEnd();
+      },
+
+      submitEnd: _.debounce(function () {
+        console.log('submitEnd!');
+        console.log('Api url', configuration.apiUrl);
         var props = this.props;
         var url = configuration.apiUrl + '/scorecards/' + props.scorecardId +'/ends';
         if (props.id) {
           url += '/' + props.id;
         }
         var scores = _.sortBy(this.refs.end.state.scores, function(i) {return -i});
-
+        console.log('posting!', url);
         $http({
           method: 'POST',
           url: url,
@@ -98,7 +104,7 @@ angular.module('shootme')
         }).then(function () {
           $location.path('/scorecards/' + props.scorecardId);
         });
-      },
+      }, 1000, {leading: true}),
 
       render: function () {
         var self = this;

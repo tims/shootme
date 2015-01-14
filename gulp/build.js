@@ -7,7 +7,7 @@ var wiredep = require('wiredep').stream;
 var filter = require('gulp-filter');
 var size = require('gulp-size');
 var jshint = require('gulp-jshint');
-var sass = require('gulp-ruby-sass');
+var sass = require('gulp-sass');
 
 function handleError(err) {
   console.error(err.toString());
