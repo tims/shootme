@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('shootme')
-  .directive('end', function ($http, $location, configuration) {
+  .directive('end', function ($http, $location, configuration, spinnerService) {
     function getRing(score) {
       if (_.isNumber(score)) {
         switch (Math.ceil(score / 2)) {
@@ -94,6 +94,7 @@ angular.module('shootme')
         }
         var scores = _.sortBy(this.refs.end.state.scores, function(i) {return -i});
         console.log('posting!', url);
+        spinnerService.spinner('main',
         $http({
           method: 'POST',
           url: url,
@@ -103,7 +104,7 @@ angular.module('shootme')
           }
         }).then(function () {
           $location.path('/scorecards/' + props.scorecardId);
-        });
+        }));
       }, 1000, {leading: true}),
 
       render: function () {
