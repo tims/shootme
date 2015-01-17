@@ -33,6 +33,12 @@ gulp.task('dist-useref', ['build'], function () {
     .pipe($.size());
 });
 
+gulp.task('dist-partials', ['build'], function () {
+  gulp.src('build/partials/**.html').pipe(gulp.dest('dist/partials'));
+});
+
+gulp.task('dist-all', ['dist-useref', 'dist-partials'])
+
 gulp.task('dist', ['clean'], function () {
-  gulp.start('dist-useref');
+  gulp.start('dist-all');
 });
