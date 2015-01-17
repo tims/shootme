@@ -1,8 +1,9 @@
 #!/bin/sh
-if [ -z "$1" ]
-then
-  echo "Which folder do you want to deploy to GitHub Pages?"
-  exit 1
-fi
-git subtree push --prefix $1 github gh-pages
+set -e
+gulp clean
+gulp dist
+echo shootme.timothysell.com > dist/CNAME
+git add --all dist
+git commit -m"deploy dist"
+git subtree push --prefix dist github gh-pages
 
