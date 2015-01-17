@@ -1,0 +1,12 @@
+<div class="header">
+  <h1 class="pure-u-1-1">ShootMe</h1>
+</div>
+
+<form class="pure-form" ng-submit="handleSubmit()">
+  <div class="pure-g">
+    <select class="pure-u-1-1" ng-options="user.name for user in users" ng-model="selectedUser">
+      <option value="">-- choose user --</option>
+    </select>
+  </div>
+  <input type="submit" class="pure-u-1 pure-button button-success" ng-disabled="!selectedUser" value="Select" />
+</form>
