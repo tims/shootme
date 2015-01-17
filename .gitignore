@@ -1,7 +1,7 @@
 mydb.sqlite
 node_modules
-bower_components
-build
+/bower_components
+app/bower_components
 dist
 .tmp
 .sass-cache
