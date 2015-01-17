@@ -1,7 +1,3 @@
-<div class="header">
-  <h1 class="pure-u-1-1">Hi {{user.name}}</h1>
-</div>
-
 <div class="pure-g">
   <h2 class="pure-u-1">Scorecards</h2>
 
@@ -10,11 +6,11 @@
   </div>
   <ul class="scorecard-list">
     <li class="pure-u-1" ng-hide="hasScorecards" ng-repeat="scorecard in user.scorecards">
-      <a href="/#/scorecards/{{scorecard.id}}">{{scorecard.date.format('DD MMM YYYY')}}</a>
+      <a href="#/scorecards/{{scorecard.id}}">{{scorecard.date.format('DD MMM YYYY')}}</a>
     </li>
   </ul>
 </div>
 <button class="pure-u-1 pure-button button-success"
-        ng-click="addNewScorecard()">
+        ng-click="createScorecard()">
   Add new scorecard
 </button>

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute'])
+angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute','angularSpinner'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/ends/new', {
@@ -20,8 +20,7 @@ angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
         controller: 'ScorecardController'
       })
       .when('/users/:userId', {
-        templateUrl: 'partials/profile/profile.html',
-        controller: 'ProfileController'
+        templateUrl: 'partials/profile/profile-view.html'
       })
       .otherwise({
         redirectTo: '/login'
@@ -30,6 +29,7 @@ angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
 
 //'https://shootme-api.herokuapp.com/api'
 angular.module('shootme').value('configuration', {
-  apiUrl: 'https://shootme-api.herokuapp.com/api'
+  apiUrl: 'http://localhost:8001/api'
 });
 //'http://localhost:8001/api'
+

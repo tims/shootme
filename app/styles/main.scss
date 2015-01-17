@@ -21,6 +21,7 @@ h1, h2 {
   border-radius: 0px;
   //text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
+
 .button-success {
   background: rgb(28, 184, 65); /* this is a green */
 }
@@ -72,6 +73,7 @@ h1, h2 {
   font-size: 0.5em;
   color: lighten(black, 50%);
 }
+
 .end__score {
   @include end__box();
   box-sizing: border-box;
@@ -88,6 +90,7 @@ h1, h2 {
   text-align: center;
   color: black;
 }
+
 .endinput__entry {
   box-sizing: border-box;
   padding: 10px;
@@ -95,14 +98,15 @@ h1, h2 {
   border: 2px solid;
   border-color: white;
 }
+
 .endinput__entry--empty {
   color: transparent;
 }
+
 .endinput__entry--active {
   //border: 2px dashed;
   color: lightcoral;
 }
-
 
 .endinput__done {
   background-color: darkorange;
@@ -132,19 +136,24 @@ h1, h2 {
 .numpad__button--gold {
   @include button-background(lighten(yellow, 15%));
 }
+
 .numpad__button--red {
   @include button-background(lighten(red, 10%));
 }
+
 .numpad__button--blue {
   @include button-background(lighten(blue, 10%));
 }
+
 .numpad__button--black {
   @include button-background(lighten(black, 20%));
   color: white;
 }
+
 .numpad__button--white {
   @include button-background(darken(white, 0%));
 }
+
 .numpad__button--miss {
   @include button-background(lighten(green, 60%));
 }
@@ -157,3 +166,14 @@ select, option {
 .scorecard-list {
   font-size: 2em;
 }
+
+.spinner {
+  .spinner__background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: lightgrey;
+    opacity: 0.5;
+  }
+}
+
