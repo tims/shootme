@@ -29,7 +29,7 @@ angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'n
 
 //'https://shootme-api.herokuapp.com/api'
 angular.module('shootme').value('configuration', {
-  apiUrl: 'http://localhost:8001/api'
+  apiUrl: 'https://shootme-api.herokuapp.com/api'
 });
 //'http://localhost:8001/api'
 
