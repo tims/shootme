@@ -3,7 +3,7 @@ var useref = require('gulp-useref');
 var filter = require('gulp-filter');
 var $ = require('gulp-load-plugins')();
 
-gulp.task('dist-useref', ['build'], function() {
+gulp.task('dist-useref', ['build'], function () {
   var htmlFilter = filter('*.html');
   var jsFilter = filter('**/*.js');
   var cssFilter = filter('**/*.css');
@@ -31,35 +31,8 @@ gulp.task('dist-useref', ['build'], function() {
     .pipe(htmlFilter.restore())
     .pipe(gulp.dest('dist'))
     .pipe($.size());
-
-  //return gulp.src('src/*.html')
-  //  .pipe($.inject(gulp.src('.tmp/{app,components}/**/*.js'), {
-  //    read: false,
-  //    starttag: '<!-- inject:partials -->',
-  //    addRootSlash: false,
-  //    addPrefix: '../'
-  //  }))
-  //  .pipe(assets = $.useref.assets())
-  //  .pipe($.rev())
-  //  .pipe(jsFilter)
-  //  .pipe($.ngAnnotate())
-  //  .pipe($.uglify({preserveComments: $.uglifySaveLicense}))
-  //  .pipe(jsFilter.restore())
-  //  .pipe(cssFilter)
-  //  .pipe($.csso())
-  //  .pipe(cssFilter.restore())
-  //  .pipe(assets.restore())
-  //  .pipe($.useref())
-  //  .pipe($.revReplace())
-  //  .pipe(htmlFilter)
-  //  .pipe($.minifyHtml({
-  //    empty: true,
-  //    spare: true,
-  //    quotes: true
-  //  }))
-  //  .pipe(htmlFilter.restore())
-  //  .pipe(gulp.dest('dist'))
-  //  .pipe($.size());
 });
 
-gulp.task('dist', ['dist-useref']);
+gulp.task('dist', ['clean'], function () {
+  gulp.start('dist-useref');
+});
