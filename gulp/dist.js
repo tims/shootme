@@ -34,7 +34,7 @@ gulp.task('dist-useref', ['build'], function () {
 });
 
 gulp.task('dist-partials', ['build'], function () {
-  gulp.src('build/partials/**.html').pipe(gulp.dest('dist/partials'));
+  gulp.src('build/partials/**').pipe(gulp.dest('dist/partials'));
 });
 
 gulp.task('dist-all', ['dist-useref', 'dist-partials'])

@@ -37,7 +37,7 @@ gulp.task('scripts', ['jsx'], function () {
 });
 
 gulp.task('partials', function () {
-  return gulp.src('app/partials/**')
+  return gulp.src('app/partials/**.html')
     .pipe(gulp.dest('build/partials'));
 });
 
