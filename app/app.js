@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute','angularSpinner'])
+angular.module('shootme', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/ends/new', {
